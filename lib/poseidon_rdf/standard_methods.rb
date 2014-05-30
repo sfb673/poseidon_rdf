@@ -26,7 +26,7 @@ module PoseidonRdf
         extend  ClassMethods
         include InstanceMethods
         class_variable_set :@@poseidon_standard_mode, :owl
-        class_variable_set :@@poseidon_standard_format, :ntriples
+        class_variable_set :@@poseidon_standard_format, :turtle
 
       end
     end
@@ -58,7 +58,7 @@ module PoseidonRdf
       end
 
       def to_rdf
-        poseidon_to_rdf(class_variable_get(:@@poseidon_standard_mode), class_variable_get(:@@poseidon_standard_format))
+        poseidon_to_rdf(self.class.class_variable_get(:@@poseidon_standard_mode), self.class.class_variable_get(:@@poseidon_standard_format))
       end
 
     end
