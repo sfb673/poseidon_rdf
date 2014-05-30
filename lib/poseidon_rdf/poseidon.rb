@@ -113,7 +113,11 @@ module PoseidonRdf
         if self.class.poseidon_present?(:instance_attributes)
           self.class.poseidon_get(:instance_attributes).each do |k,v|
             v.each do |u|
-              graph << [selfuri, u, self.send(k) ]
+              #puts "Sending %s to %s (%s)" % [k, self, self.class.name]
+              resulting_value = self.send(k)
+              unless resulting_value.nil?
+                graph << [selfuri, u, resulting_value ]
+              end
             end
           end
         end
