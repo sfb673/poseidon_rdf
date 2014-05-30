@@ -26,6 +26,7 @@ module PoseidonRdf
         extend  ClassMethods
         include InstanceMethods
         class_variable_set :@@poseidon_config, PoseidonRdf::PoseidonCore.new
+        class_variable_set :@@poseidon_prefixes, {}
       end
     end
 
@@ -78,8 +79,12 @@ module PoseidonRdf
         class_variable_get :@@poseidon_rdf_graph
       end
 
-      def poseidon_to_rdf(mode = :owl, format = :turtle)
-        dump_opts = {prefixes: PoseidonRdf::PoseidonCore::CORE_PREFIXES}
+      def poseidon_to_rdf(mode = :owl, format = :turtle, opts = {})
+        dump_prefixes = PoseidonRdf::PoseidonCore::CORE_PREFIXES
+        if opts.has_key?(:prefixes)
+          dump_prefixes = dump_prefixes.merge opts[:prefixes]
+        end
+        dump_opts = {prefixes: dump_prefixes}
         dump_opts[:base_uri] = poseidon_get(:base) if poseidon_present?(:base)
         poseidon_as_rdf(mode).dump(format, dump_opts ) # , opts.select{ |k,v| [:base_uri, :prefixes].include?(k)})
       end
@@ -90,6 +95,12 @@ module PoseidonRdf
         else
           RDF::URI(object.instance_eval('"%s"' % poseidon_get(:instance_uri_scheme)))
         end
+      end
+
+      def poseidon_add_prefixes(prefixes)
+        hash = class_variable_get :@@poseidon_prefixes
+        hash = hash.merge(prefixes)
+        class_variable_set :@@poseidon_prefixes, hash
       end
 
       # evaluates the block and stores the configuration in
@@ -148,8 +159,12 @@ module PoseidonRdf
         self.instance_variable_get :@poseidon_rdf_graph
       end
 
-      def poseidon_to_rdf(mode = :owl, format = :turtle)
-        dump_opts = {prefixes: PoseidonRdf::PoseidonCore::CORE_PREFIXES}
+      def poseidon_to_rdf(mode = :owl, format = :turtle, opts = {})
+        dump_prefixes = PoseidonRdf::PoseidonCore::CORE_PREFIXES
+        if opts.has_key?(:prefixes)
+          dump_prefixes = dump_prefixes.merge opts[:prefixes]
+        end
+        dump_opts = {prefixes: dump_prefixes}
         dump_opts[:base_uri] = self.class.poseidon_get(:base) if self.class.poseidon_present?(:base)
         self.poseidon_as_rdf(mode).dump(format, dump_opts ) # , opts.select{ |k,v| [:base_uri, :prefixes].include?(k)})
       end
