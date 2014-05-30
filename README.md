@@ -1,5 +1,7 @@
 # POSEIdON_RDF
 
+[![Gem Version](https://badge.fury.io/rb/poseidon_rdf.svg)](http://badge.fury.io/rb/poseidon_rdf)
+
 POSEIdON (short for "Pimp your Objects with SEmantic InformatiON") is a small
 library that lets you add RDF information to classes and their instances.
 It can also add methods `as_rdf` and `to_rdf` to those classes and objects that
