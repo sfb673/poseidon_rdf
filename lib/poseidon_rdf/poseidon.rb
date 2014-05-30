@@ -140,8 +140,8 @@ module PoseidonRdf
         unless instance_variable_defined?(:@poseidon_rdf_graph)
           self.generate_poseidon_rdf(mode)
         end
-        puts instance_variable_get :@poseidon_rdf_graph
-        instance_variable_get :@poseidon_rdf_graph
+        # puts self.instance_variable_get :@poseidon_rdf_graph
+        self.instance_variable_get :@poseidon_rdf_graph
       end
 
       def poseidon_to_rdf(mode = :owl, format = :turtle)
